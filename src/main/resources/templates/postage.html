@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Postage Form</title>
+</head>
+<body>
+<h1>Postage Form</h1>
+
+<form id="postageForm" method="post" action="/api/postage">
+    <label>Field 1:
+        <input type="text" name="field1" required>
+    </label>
+    <br><br>
+
+    <label>Field 2:
+        <input type="text" name="field2" required>
+    </label>
+    <br><br>
+
+    <label>Field 3:
+        <input type="text" name="field3" required>
+    </label>
+    <br><br>
+
+    <button type="submit">Submit</button>
+</form>
+
+<div id="result" style="margin-top:20px; font-weight:bold;"></div>
+
+<script>
+    document.getElementById("postageForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch("/api/postage", {
+            method: "POST",
+            body: new URLSearchParams(formData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("result").innerText = data;
+            this.reset();
+        })
+        .catch(error => {
+            document.getElementById("result").innerText = "Error: " + error;
+        });
+    });
+</script>
+
+</body>
+</html>

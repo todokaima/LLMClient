@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Greeting</title>
+</head>
+<body>
+<h1 th:text="'Hello, ' + ${name} + '!'">Hello, World!</h1>
+
+<form id="askForm">
+    <label>Ask something:
+        <input type="text" name="question" required>
+    </label>
+    <button type="submit">Ask</button>
+</form>
+
+<div id="answer" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+    document.getElementById("askForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const question = this.question.value;
+
+        fetch("/api/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: question })
+        })
+        .then(response => response.text())
+        .then(data => document.getElementById("answer").innerText = data)
+        .catch(err => document.getElementById("answer").innerText = "Error: " + err);
+    });
+</script>
+</body>
+</html>
