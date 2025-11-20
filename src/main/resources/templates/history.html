@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>History</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        h1 { margin-bottom: 1rem; }
+        #posts { list-style: none; padding: 0; }
+        #posts li { background: #f2f2f2; margin-bottom: 0.5rem; padding: 0.5rem 1rem; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<h1>Post History (Real-time)</h1>
+<ul id="posts"></ul>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+<script>
+    const postsList = document.getElementById("posts");
+    let stompClient = null;
+
+    // 1️⃣ Fetch old posts
+    fetch('/api/posts')
+        .then(res => res.json())
+        .then(posts => {
+            posts.forEach(addPostToList);
+        });
+
+    // 2️⃣ Connect WebSocket
+    function connectWS() {
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function() {
+            console.log("Connected to WebSocket");
+            stompClient.subscribe('/topic/posts', function(message) {
+                const post = JSON.parse(message.body);
+                addPostToList(post);
+            });
+        });
+    }
+
+    function addPostToList(post) {
+        const li = document.createElement('li');
+        li.textContent = `${post.field1} | ${post.field2} | ${post.field3} | ${post.createdAt}`;
+        postsList.appendChild(li);
+    }
+
+    connectWS();
+</script>
+</body>
+</html>
