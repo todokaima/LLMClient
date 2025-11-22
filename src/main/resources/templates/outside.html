@@ -1,0 +1,20 @@
+<h1>Send Text to Kafka</h1>
+<input id="toKafka" placeholder="Type your message">
+
+<button onclick="sendKafka()">Kafka</button>
+
+<script>
+    function sendKafka() {
+        const message = document.getElementById("toKafka").value;
+        if (!message) return alert("Please enter a message");
+
+        fetch('/api/send?message=' + encodeURIComponent(message), {
+            method: 'POST'
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+
+        document.getElementById("toKafka").value = "";
+    }
+</script>

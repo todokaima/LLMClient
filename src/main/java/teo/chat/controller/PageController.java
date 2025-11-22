@@ -29,6 +29,11 @@ public class PageController {
     public String postagePage() {
         return "postage";
     }
+    // Kafka page
+    @GetMapping("/outside")
+    public String outsidePage() {
+        return "outside";
+    }
 
     // Greeting page
     @GetMapping("/greeting")
