@@ -1,33 +1,36 @@
-<h1>Create a New Post</h1>
-<input id="field1" placeholder="Field 1">
-<input id="field2" placeholder="Field 2">
-<input id="field3" placeholder="Field 3">
-<button onclick="sendPost()">Submit Post</button>
+<body style="background-color:grey;">
 
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <h1>Create a New Post</h1>
+    <input id="field1" placeholder="Field 1">
+    <input id="field2" placeholder="Field 2">
+    <input id="field3" placeholder="Field 3">
+    <button onclick="sendPost()">Submit Post</button>
 
-<script>
-    let stompClient = null;
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
-    function connectWS() {
-        const socket = new SockJS('/ws');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, () => console.log("Connected"));
-    }
+    <script>
+        let stompClient = null;
 
-    function sendPost() {
-        const f1 = document.getElementById("field1").value;
-        const f2 = document.getElementById("field2").value;
-        const f3 = document.getElementById("field3").value;
-        if (!f1 || !f2 || !f3) return alert("All fields required");
+        function connectWS() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, () => console.log("Connected"));
+        }
 
-        stompClient.send("/app/newPost", {}, JSON.stringify({field1: f1, field2: f2, field3: f3}));
+        function sendPost() {
+            const f1 = document.getElementById("field1").value;
+            const f2 = document.getElementById("field2").value;
+            const f3 = document.getElementById("field3").value;
+            if (!f1 || !f2 || !f3) return alert("All fields required");
 
-        document.getElementById("field1").value = "";
-        document.getElementById("field2").value = "";
-        document.getElementById("field3").value = "";
-    }
+            stompClient.send("/app/newPost", {}, JSON.stringify({field1: f1, field2: f2, field3: f3}));
 
-    connectWS();
-</script>
+            document.getElementById("field1").value = "";
+            document.getElementById("field2").value = "";
+            document.getElementById("field3").value = "";
+        }
+
+        connectWS();
+    </script>
+</body>
