@@ -14,7 +14,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 @SpringBootApplication
 public class ChatApplication {
-
+///home/teo/Downloads/kafka_2.13-4.1.1/bin/kafka-server-start.sh \
+//  ~/Downloads/kafka_2.13-4.1.1/config/kraft-server.properties
     public static void main(String[] args) {
         SpringApplication.run(ChatApplication.class, args);
     }
