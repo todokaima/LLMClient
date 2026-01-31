@@ -40,20 +40,18 @@ public class ApiController {
                 .collect(Collectors.toList());
     }
 
-    // Save a new post (postage page)
     @PostMapping("/postage")
     public String savePost(@ModelAttribute Post post) {
         postService.save(post);
         return "Post saved successfully!";
     }
 
-    // Ollama AI question endpoint
     @PostMapping("/ask")
     public String askQuestion(@RequestBody Map<String, String> payload) {
         String question = payload.get("question");
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "dolphin-llama3:8b");
+        requestBody.put("model", "llama3.1:8b");
         requestBody.put("prompt", question);
         Map<String, Object> options = new HashMap<>();
         options.put("num_ctx", 8000);
